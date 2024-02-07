@@ -101,7 +101,7 @@ const Login = () => {
                     label="Password"
                   />
                 </FormControl>
-                <input type="submit" className="btnPrimary" />
+                <input type="submit" value="LOGIN" className="btnPrimary" />
               </form>
             </div>
           </div>
