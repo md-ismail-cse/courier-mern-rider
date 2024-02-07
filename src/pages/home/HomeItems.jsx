@@ -1,6 +1,6 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import Loader from "../../components/loader/Loader";
 
 const HomeItems = () => {
@@ -13,7 +13,12 @@ const HomeItems = () => {
   useEffect(() => {
     const fatchParcels = async () => {
       const { data } = await axios.get(
-        process.env.REACT_APP_SERVER + "/api/admin/parcels"
+        process.env.REACT_APP_SERVER + "/api/admin/parcels",
+        {
+          headers: {
+            Authorization: localStorage.getItem("rToken"),
+          },
+        }
       );
       const newParcels = data.filter((curData) => {
         return curData.picRiderID === id || curData.dlvRiderID === id;

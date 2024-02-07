@@ -1,15 +1,12 @@
-import React from "react";
-import Title from "../../components/title/Title";
 import { TextField } from "@mui/material";
-import { useState } from "react";
-import { useEffect } from "react";
 import axios from "axios";
+import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import Loader from "../../components/loader/Loader";
+import Title from "../../components/title/Title";
 
 const EditDetails = () => {
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
   const [currentThumb, setThumb] = useState("");
@@ -20,10 +17,14 @@ const EditDetails = () => {
   useEffect(() => {
     const fatchRider = async () => {
       const { data } = await axios.get(
-        process.env.REACT_APP_SERVER + `/api/admin/riders/${id}`
+        process.env.REACT_APP_SERVER + `/api/admin/riders/${id}`,
+        {
+          headers: {
+            Authorization: localStorage.getItem("rToken"),
+          },
+        }
       );
       setName(data.name);
-      setEmail(data.email);
       setPhone(data.phone);
       setAddress(data.address);
       setThumb(data.thumb);
@@ -48,6 +49,7 @@ const EditDetails = () => {
         {
           headers: {
             "Content-Type": "multipart/form-data",
+            Authorization: localStorage.getItem("rToken"),
           },
         }
       )
@@ -83,17 +85,6 @@ const EditDetails = () => {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                 />
-                <TextField
-                  fullWidth
-                  label="Email"
-                  type="email"
-                  value={email}
-                  InputProps={{
-                    readOnly: true,
-                  }}
-                  helperText={"Email can not be change."}
-                />
-
                 <TextField
                   required
                   fullWidth

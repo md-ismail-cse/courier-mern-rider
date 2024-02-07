@@ -1,10 +1,9 @@
-import { useState } from "react";
-import Title from "../../components/title/Title";
 import { Avatar, TextField } from "@mui/material";
-import { useEffect } from "react";
 import axios from "axios";
+import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import Loader from "../../components/loader/Loader";
+import Title from "../../components/title/Title";
 
 const ChangePicture = () => {
   const [currentThumb, setThumb] = useState("");
@@ -15,7 +14,12 @@ const ChangePicture = () => {
   useEffect(() => {
     const fatchRider = async () => {
       const { data } = await axios.get(
-        process.env.REACT_APP_SERVER + `/api/admin/riders/${id}`
+        process.env.REACT_APP_SERVER + `/api/admin/riders/${id}`,
+        {
+          headers: {
+            Authorization: localStorage.getItem("rToken"),
+          },
+        }
       );
       setThumb(data.thumb);
       setLoading(true);
@@ -36,6 +40,7 @@ const ChangePicture = () => {
         {
           headers: {
             "Content-Type": "multipart/form-data",
+            Authorization: localStorage.getItem("rToken"),
           },
         }
       )

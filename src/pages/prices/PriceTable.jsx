@@ -1,8 +1,7 @@
 import { Box } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import { useEffect } from "react";
-import { useState } from "react";
 import axios from "axios";
+import { useEffect, useState } from "react";
 import Loader from "../../components/loader/Loader";
 
 const PriceTable = () => {
@@ -12,7 +11,12 @@ const PriceTable = () => {
   useEffect(() => {
     const fatchPrices = async () => {
       const { data } = await axios.get(
-        process.env.REACT_APP_SERVER + "/api/admin/prices"
+        process.env.REACT_APP_SERVER + "/api/admin/prices",
+        {
+          headers: {
+            Authorization: localStorage.getItem("rToken"),
+          },
+        }
       );
       setPrices(data);
       setLoading(true);
@@ -30,6 +34,12 @@ const PriceTable = () => {
       field: "endLocation",
       headerName: "End location",
       width: 150,
+    },
+    {
+      field: "duration",
+      headerName: "Duration",
+      width: 150,
+      valueGetter: (params) => `${params.row.duration} Days`,
     },
     {
       field: "price",

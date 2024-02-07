@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
-import Title from "../../components/title/Title";
-import { Link } from "react-router-dom";
 import { Box } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import Loader from "../../components/loader/Loader";
+import Title from "../../components/title/Title";
 
 const PendingParcels = () => {
   const id = localStorage.getItem("rID");
@@ -14,7 +14,12 @@ const PendingParcels = () => {
   useEffect(() => {
     const fatchParcels = async () => {
       const { data } = await axios.get(
-        process.env.REACT_APP_SERVER + "/api/admin/parcels"
+        process.env.REACT_APP_SERVER + "/api/admin/parcels",
+        {
+          headers: {
+            Authorization: localStorage.getItem("rToken"),
+          },
+        }
       );
       const newParcels = data.filter((curData) => {
         return (
@@ -77,10 +82,26 @@ const PendingParcels = () => {
     {
       field: "recPhone",
       headerName: "Rec_phone",
+      renderCell: (params) => {
+        return (
+          <div className="tableLink">
+            <Link to={"tel:" + params.row.recPhone}>{params.row.recPhone}</Link>
+          </div>
+        );
+      },
     },
     {
       field: "recEmail",
       headerName: "Rec_email",
+      renderCell: (params) => {
+        return (
+          <div className="tableLink">
+            <Link to={"mailto:" + params.row.recEmail}>
+              {params.row.recEmail}
+            </Link>
+          </div>
+        );
+      },
     },
     {
       field: "recAddress",

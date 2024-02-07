@@ -1,7 +1,6 @@
-import { useEffect } from "react";
-import { useState } from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   // Get current logged rider
@@ -10,7 +9,12 @@ const Navbar = () => {
   useEffect(() => {
     const fatchCustomer = async () => {
       const { data } = await axios.get(
-        process.env.REACT_APP_SERVER + `/api/admin/riders/${id}`
+        process.env.REACT_APP_SERVER + `/api/admin/riders/${id}`,
+        {
+          headers: {
+            Authorization: localStorage.getItem("rToken"),
+          },
+        }
       );
       setRider(data);
     };
@@ -22,7 +26,12 @@ const Navbar = () => {
   useEffect(() => {
     const fatchParcels = async () => {
       const { data } = await axios.get(
-        process.env.REACT_APP_SERVER + "/api/admin/parcels"
+        process.env.REACT_APP_SERVER + "/api/admin/parcels",
+        {
+          headers: {
+            Authorization: localStorage.getItem("rToken"),
+          },
+        }
       );
       const newParcels = data.filter((curData) => {
         return (

@@ -5,7 +5,7 @@ const Prices = () => {
   return (
     <>
       <div className="prices">
-        <Title title="Delivery Cost" />
+        <Title title="Delivery charge" />
         <div className="content">
           <PriceTable />
         </div>

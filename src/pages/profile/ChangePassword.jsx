@@ -1,5 +1,3 @@
-import React, { useState } from "react";
-import Title from "../../components/title/Title";
 import {
   FormControl,
   IconButton,
@@ -7,10 +5,11 @@ import {
   InputLabel,
   OutlinedInput,
 } from "@mui/material";
-import { useEffect } from "react";
 import axios from "axios";
+import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import Loader from "../../components/loader/Loader";
+import Title from "../../components/title/Title";
 
 const ChangePassword = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -41,7 +40,12 @@ const ChangePassword = () => {
   useEffect(() => {
     const fatchRider = async () => {
       const { data } = await axios.get(
-        process.env.REACT_APP_SERVER + `/api/admin/riders/${id}`
+        process.env.REACT_APP_SERVER + `/api/admin/riders/${id}`,
+        {
+          headers: {
+            Authorization: localStorage.getItem("rToken"),
+          },
+        }
       );
       setThumb(data.thumb);
       setEmail(data.email);
@@ -67,6 +71,7 @@ const ChangePassword = () => {
           {
             headers: {
               "Content-Type": "multipart/form-data",
+              Authorization: localStorage.getItem("rToken"),
             },
           }
         )

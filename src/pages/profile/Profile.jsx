@@ -1,8 +1,8 @@
 import { Avatar, Button } from "@mui/material";
-import Title from "../../components/title/Title";
-import { useEffect, useState } from "react";
 import axios from "axios";
+import { useEffect, useState } from "react";
 import Loader from "../../components/loader/Loader";
+import Title from "../../components/title/Title";
 
 const Profile = () => {
   // Get current logged rider
@@ -12,7 +12,12 @@ const Profile = () => {
   useEffect(() => {
     const fatchRider = async () => {
       const { data } = await axios.get(
-        process.env.REACT_APP_SERVER + `/api/admin/riders/${id}`
+        process.env.REACT_APP_SERVER + `/api/admin/riders/${id}`,
+        {
+          headers: {
+            Authorization: localStorage.getItem("rToken"),
+          },
+        }
       );
       setRider(data);
       setLoading(true);
@@ -56,6 +61,10 @@ const Profile = () => {
                   <tr>
                     <th>Phone:</th>
                     <td>{rider.phone}</td>
+                  </tr>
+                  <tr>
+                    <th>Gender:</th>
+                    <td>{rider.gender}</td>
                   </tr>
                   <tr>
                     <th>Address:</th>
